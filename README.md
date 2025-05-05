@@ -7,9 +7,11 @@
 <img src="https://img.shields.io/badge/License-GPL--3.0--or--later-34ad9b" alt="License GPL--3.0--or--later">
 </div>
 
-<p>The HTTP Component is a PHP library designed to simplify the process of making HTTP requests and handling HTTP responses 
+<p>
+The HTTP Component is a PHP library designed to simplify the process of making HTTP requests and handling HTTP responses 
 in your applications. It follows the [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7/) standards for 
-HTTP messages, making it compatible with other libraries and frameworks that also adhere to these standards.</p>
+HTTP messages, making it compatible with other libraries and frameworks that also adhere to these standards.
+</p>
 
 ## Installation
 
