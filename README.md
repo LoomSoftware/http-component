@@ -1,11 +1,11 @@
 # Loom | HTTP Component
 
-<div>
+<p>
 <!-- Version Badge -->
 <img src="https://img.shields.io/badge/Version-1.0.0-blue" alt="Version 1.0.0">
 <!-- License Badge -->
 <img src="https://img.shields.io/badge/License-GPL--3.0--or--later-34ad9b" alt="License GPL--3.0--or--later">
-</div>
+</p>
 
 <p>
 The HTTP Component is a PHP library designed to simplify the process of making HTTP requests and handling HTTP responses 
