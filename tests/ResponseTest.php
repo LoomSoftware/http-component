@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponentTests;
 
 use Loom\HttpComponent\Response;
 use Loom\HttpComponentTests\Traits\ProvidesHeaderDataTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
@@ -15,9 +18,6 @@ class ResponseTest extends TestCase
         $this->assertEquals('1.1', (new Response())->getProtocolVersion());
     }
 
-    /**
-     * @return void
-     */
     public function testWithProtocolVersion(): void
     {
         $response = new Response();
@@ -26,37 +26,22 @@ class ResponseTest extends TestCase
         $this->assertEquals('2.0', $response->getProtocolVersion());
     }
 
-    /**
-     * @return void
-     */
     public function testGetHeaders(): void
     {
         $this->assertEquals(['content-type' => ['application/json']], ($this->getSimpleResponse())->getHeaders());
     }
 
-    /**
-     * @param string $key
-     *
-     * @dataProvider headerKeyProvider
-     *
-     * @return void
-     */
+    #[DataProvider('headerKeyProvider')]
     public function testHasHeader(string $key): void
     {
         $this->assertTrue(($this->getSimpleResponse())->hasHeader($key));
     }
 
-    /**
-     * @return void
-     */
     public function testGetHeader(): void
     {
         $this->assertEquals(['application/json'], ($this->getSimpleResponse())->getHeader('CONTENT-TYPE'));
     }
 
-    /**
-     * @return void
-     */
     public function testWithHeader(): void
     {
         $response = $this->getSimpleResponse();
@@ -65,9 +50,6 @@ class ResponseTest extends TestCase
         $this->assertEquals(['text/html'], $response->getHeader('content-type'));
     }
 
-    /**
-     * @return void
-     */
     public function testWithAddedHeader(): void
     {
         $response = $this->getSimpleResponse();
@@ -76,9 +58,6 @@ class ResponseTest extends TestCase
         $this->assertEquals(['application/json', 'text/html'], $response->getHeader('content-type'));
     }
 
-    /**
-     * @return void
-     */
     public function testGetHeaderLine(): void
     {
         $response = $this->getSimpleResponse();
@@ -87,9 +66,6 @@ class ResponseTest extends TestCase
         $this->assertEquals('application/json, text/html', $response->getHeaderLine('content-type'));
     }
 
-    /**
-     * @return void
-     */
     public function testWithoutHeader(): void
     {
         $response = $this->getSimpleResponse();
@@ -98,9 +74,6 @@ class ResponseTest extends TestCase
         $this->assertEquals([], $response->getHeaders());
     }
 
-    /**
-     * @return void
-     */
     public function testWithStatus(): void
     {
         $response = $this->getSimpleResponse();
@@ -109,9 +82,13 @@ class ResponseTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @return Response
-     */
+    public function testGetReasonPhrase(): void
+    {
+        $response = $this->getSimpleResponse();
+
+        $this->assertEquals('OK', $response->getReasonPhrase());
+    }
+
     private function getSimpleResponse(): Response
     {
         return new Response(200, 'OK', ['Content-Type' => 'application/json']);

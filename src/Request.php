@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponent;
 
 use Loom\HttpComponent\Traits\ResolveHeadersTrait;
@@ -12,39 +14,24 @@ class Request implements RequestInterface
 {
     use ResolveHeadersTrait;
 
-    private UriInterface $uri;
     private StreamInterface $body;
-    private string $method;
-    private array $headers;
-    private string $protocolVersion;
 
     public function __construct(
-        string $method,
-        UriInterface $uri,
-        array $headers = [],
-        StreamInterface $body = null,
-        string $protocolVersion = '1.1'
+        private string $method,
+        private UriInterface $uri,
+        private array $headers = [],
+        ?StreamInterface $body = null,
+        private string $protocolVersion = '1.1'
     ) {
-        $this->method = $method;
-        $this->uri = $uri;
         $this->headers = $this->setHeaders($headers);
         $this->body = $body ?? new Stream(fopen('php://temp', 'r+'));
-        $this->protocolVersion = $protocolVersion;
     }
 
-    /**
-     * @return string
-     */
     public function getProtocolVersion(): string
     {
         return $this->protocolVersion;
     }
 
-    /**
-     * @param string $version
-     *
-     * @return MessageInterface
-     */
     public function withProtocolVersion(string $version): MessageInterface
     {
         $request = clone $this;
@@ -53,50 +40,29 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @return array
-     */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasHeader(string $name): bool
     {
         return isset($this->headers[strtolower($name)]);
     }
 
     /**
-     * @param string $name
-     *
-     * @return array|string[]
+     * @return string[]
      */
     public function getHeader(string $name): array
     {
         return $this->headers[strtolower($name)] ?? [];
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
     public function getHeaderLine(string $name): string
     {
         return implode(', ', $this->getHeader($name));
     }
 
-    /**
-     * @param string $name
-     * @param $value
-     *
-     * @return MessageInterface
-     */
     public function withHeader(string $name, $value): MessageInterface
     {
         $request = clone $this;
@@ -105,12 +71,6 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @param string $name
-     * @param $value
-     *
-     * @return MessageInterface
-     */
     public function withAddedHeader(string $name, $value): MessageInterface
     {
         $name = strtolower($name);
@@ -120,11 +80,6 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return MessageInterface
-     */
     public function withoutHeader(string $name): MessageInterface
     {
         $request = clone $this;
@@ -133,19 +88,11 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @return StreamInterface
-     */
     public function getBody(): StreamInterface
     {
         return $this->body;
     }
 
-    /**
-     * @param StreamInterface $body
-     *
-     * @return MessageInterface
-     */
     public function withBody(StreamInterface $body): MessageInterface
     {
         $request = clone $this;
@@ -154,9 +101,6 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @return string
-     */
     public function getRequestTarget(): string
     {
         $path = $this->uri->getPath();
@@ -167,11 +111,6 @@ class Request implements RequestInterface
             : ($query ? sprintf('/?%s', $query) : '/');
     }
 
-    /**
-     * @param string $requestTarget
-     *
-     * @return RequestInterface
-     */
     public function withRequestTarget(string $requestTarget): RequestInterface
     {
         $request = clone $this;
@@ -181,19 +120,11 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     *
-     * @return RequestInterface
-     */
     public function withMethod(string $method): RequestInterface
     {
         $request = clone $this;
@@ -202,20 +133,11 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @return UriInterface
-     */
     public function getUri(): UriInterface
     {
         return $this->uri;
     }
 
-    /**
-     * @param UriInterface $uri
-     * @param bool $preserveHost
-     *
-     * @return RequestInterface
-     */
     public function withUri(UriInterface $uri, bool $preserveHost = false): RequestInterface
     {
         $request = clone $this;
@@ -228,9 +150,6 @@ class Request implements RequestInterface
         return $request;
     }
 
-    /**
-     * @return array
-     */
     public function getFlatHeaders(): array
     {
         $headerStrings = [];
@@ -244,9 +163,6 @@ class Request implements RequestInterface
         return $headerStrings;
     }
 
-    /**
-     * @return array
-     */
     public function getData(): array
     {
         $contentType = $this->getHeaderLine('Content-Type');
@@ -263,30 +179,16 @@ class Request implements RequestInterface
         return $data;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
     public function get(string $key): mixed
     {
         return $this->getData()[$key] ?? null;
     }
 
-    /**
-     * @param string $name
-     * @param string|null $default
-     *
-     * @return string|null
-     */
     public function getQueryParam(string $name, ?string $default = null): ?string
     {
         return $this->getQueryParams()[$name] ?? $default;
     }
 
-    /**
-     * @return array
-     */
     protected function getQueryParams(): array
     {
         $queryParams = [];

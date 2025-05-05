@@ -1,29 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponentTests\Traits;
 
 trait ProvidesHeaderDataTrait
 {
-    /**
-     * @return array
-     */
     public static function methodProvider(): array
     {
         return [
             'POST' => [
-                'POST',
+                'method' => 'POST',
             ],
             'PUT' => [
-                'PUT',
+                'method' => 'PUT',
             ],
             'DELETE' => [
-                'DELETE',
+                'method' => 'DELETE',
             ],
             'GET' => [
-                'GET',
+                'method' => 'GET',
             ],
             'PATCH' => [
-                'PATCH',
+                'method' => 'PATCH',
             ]
         ];
     }

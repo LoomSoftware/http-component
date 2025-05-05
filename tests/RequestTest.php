@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponentTests;
 
 use Loom\HttpComponent\Request;
@@ -7,6 +9,7 @@ use Loom\HttpComponent\Stream;
 use Loom\HttpComponent\StreamBuilder;
 use Loom\HttpComponent\Uri;
 use Loom\HttpComponentTests\Traits\ProvidesHeaderDataTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Framework\TestCase;
 
@@ -15,8 +18,6 @@ class RequestTest extends TestCase
     use ProvidesHeaderDataTrait;
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testGetHeaders(): void
@@ -27,8 +28,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testMultipleHeaders(): void
@@ -41,8 +40,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testWithHeader(): void
@@ -55,8 +52,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testWithAddedHeader(): void
@@ -69,14 +64,9 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @param string $key
-     *
-     * @dataProvider headerKeyProvider
-     *
-     * @return void
-     *
      * @throws MockObjectException
      */
+    #[DataProvider('headerKeyProvider')]
     public function testHasHeader(string $key): void
     {
         $request = $this->simpleGetRequest();
@@ -85,8 +75,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testWithoutHeader(): void
@@ -99,8 +87,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testGetHeaderLine(): void
@@ -111,14 +97,9 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @param string $method
-     *
-     * @dataProvider methodProvider
-     *
-     * @return void
-     *
      * @throws MockObjectException
      */
+    #[DataProvider('methodProvider')]
     public function testWithMethod(string $method): void
     {
         $request = $this->simpleGetRequest();
@@ -128,9 +109,6 @@ class RequestTest extends TestCase
         $this->assertEquals($method, $request->getMethod());
     }
 
-    /**
-     * @return void
-     */
     public function testGetRequestTarget(): void
     {
         $uri = new Uri('https', 'localhost', '/test', 'hello=world');
@@ -140,9 +118,6 @@ class RequestTest extends TestCase
         $this->assertEquals('/test?hello=world', $request->getRequestTarget());
     }
 
-    /**
-     * @return void
-     */
     public function testWithRequestTarget(): void
     {
         $uri = new Uri('https', 'localhost', '/test', 'hello=world');
@@ -155,8 +130,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testWithUri(): void
@@ -170,8 +143,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws MockObjectException
      */
     public function testGetData(): void
@@ -193,9 +164,16 @@ class RequestTest extends TestCase
         $this->assertEquals([], $request->getData());
     }
 
+    public function testWithProtocolVersion(): void
+    {
+        $request = new Request('GET', $this->createMock(Uri::class));
+
+        $request = $request->withProtocolVersion('2.0');
+
+        $this->assertEquals('2.0', $request->getProtocolVersion());
+    }
+
     /**
-     * @return array
-     *
      * @throws MockObjectException
      */
     private function getMockObjects(): array
@@ -207,8 +185,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return Request
-     *
      * @throws MockObjectException
      */
     private function simpleGetRequest(): Request

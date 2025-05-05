@@ -14,7 +14,7 @@ class Uri implements UriInterface
     private string $fragment;
     private string $userInfo;
 
-    public function __construct(string $scheme, string $host, string $path, string $query, string|int $port = null)
+    public function __construct(string $scheme, string $host, string $path, string $query, string|int|null $port = null)
     {
         $this->scheme = $scheme;
         $this->host = $host;
