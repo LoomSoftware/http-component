@@ -1,0 +1,27 @@
+{
+    "name": "loomlabs/http-component",
+    "description": "A component for handling HTTP Requests/Responses",
+    "scripts": {
+        "test": "php -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --colors=always --coverage-html coverage --coverage-clover coverage/coverage.xml --testdox-html coverage/testdox.html && npx badger --phpunit ./coverage/coverage.xml && npx badger --version ./composer.json && npx badger --license ./composer.json"
+    },
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "psr/http-message": "^2.0",
+        "psr/http-client": "^1.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Loom\\HttpComponent\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Loom\\HttpComponentTests\\": "tests/"
+        }
+    },
+    "version": "1.0.0",
+    "require-dev": {
+        "phpunit/phpunit": "^12.1"
+    }
+}
