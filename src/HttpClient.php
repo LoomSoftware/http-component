@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponent;
 
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -9,11 +12,6 @@ use Psr\Http\Message\UriInterface;
 
 class HttpClient implements ClientInterface
 {
-    /**
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         $curl = curl_init();
@@ -29,73 +27,33 @@ class HttpClient implements ClientInterface
         return $response->withBody(StreamBuilder::build(substr($responseText, $headerSize)));
     }
 
-    /**
-     * @param string $endpoint
-     * @param array $headers
-     * @param string $body
-     *
-     * @return ResponseInterface
-     */
     public function get(string $endpoint, array $headers = [], string $body = ''): ResponseInterface
     {
         return $this->buildAndSend('GET', $endpoint, $headers, $body);
     }
 
-    /**
-     * @param string $endpoint
-     * @param array $headers
-     * @param string $body
-     *
-     * @return ResponseInterface
-     */
     public function post(string $endpoint, array $headers = [], string $body = ''): ResponseInterface
     {
         return $this->buildAndSend('POST', $endpoint, $headers, $body);
     }
 
-    /**
-     * @param string $endpoint
-     * @param array $headers
-     * @param string $body
-     *
-     * @return ResponseInterface
-     */
     public function put(string $endpoint, array $headers = [], string $body = ''): ResponseInterface
     {
         return $this->buildAndSend('PUT', $endpoint, $headers, $body);
     }
 
-    /**
-     * @param string $endpoint
-     * @param array $headers
-     * @param string $body
-     *
-     * @return ResponseInterface
-     */
     public function patch(string $endpoint, array $headers = [], string $body = ''): ResponseInterface
     {
         return $this->buildAndSend('PATCH', $endpoint, $headers, $body);
     }
 
-    /**
-     * @param string $endpoint
-     * @param array $headers
-     * @param string $body
-     *
-     * @return ResponseInterface
-     */
     public function delete(string $endpoint, array $headers = [], string $body = ''): ResponseInterface
     {
         return $this->buildAndSend('DELETE', $endpoint, $headers, $body);
     }
 
     /**
-     * @param string $method
-     * @param string $endpoint
-     * @param array $headers
-     * @param string $body
-     *
-     * @return ResponseInterface
+     * @throws ClientExceptionInterface
      */
     private function buildAndSend(string $method, string $endpoint, array $headers, string $body): ResponseInterface
     {
@@ -104,11 +62,6 @@ class HttpClient implements ClientInterface
         return $this->sendRequest($request);
     }
 
-    /**
-     * @param string $endpoint
-     *
-     * @return UriInterface
-     */
     private function buildUriFromEndpoint(string $endpoint): UriInterface
     {
         if (!parse_url($endpoint, PHP_URL_SCHEME)) {
@@ -126,12 +79,6 @@ class HttpClient implements ClientInterface
         );
     }
 
-    /**
-     * @param \CurlHandle $curl
-     * @param RequestInterface $request
-     *
-     * @return void
-     */
     private function setCurlOptions(\CurlHandle &$curl, RequestInterface $request): void
     {
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request->getMethod());
@@ -145,10 +92,6 @@ class HttpClient implements ClientInterface
     }
 
     /**
-     * @param \CurlHandle $curl
-     *
-     * @return bool|string
-     *
      * @throws \RuntimeException
      */
     private function getRawResponse(\CurlHandle &$curl): bool|string
@@ -164,13 +107,6 @@ class HttpClient implements ClientInterface
         return $responseText;
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param string $responseText
-     * @param int $headerSize
-     *
-     * @return ResponseInterface
-     */
     private function parseHeaders(ResponseInterface &$response, string $responseText, int $headerSize): ResponseInterface
     {
         $responseHeaders = substr($responseText, 0, $headerSize);

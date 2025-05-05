@@ -1,14 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponent\Traits;
 
 trait ResolveHeadersTrait
 {
-    /**
-     * @param array $headers
-     *
-     * @return array
-     */
     protected function setHeaders(array $headers): array
     {
         $sortedHeaders = [];

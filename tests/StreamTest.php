@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponentTests;
 
 use Loom\HttpComponent\Stream;
@@ -7,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class StreamTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testToString(): void
     {
         [$stream, $data] = $this->getWritableStreamWithData();
@@ -19,9 +18,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testGetSize(): void
     {
         [$stream, $data] = $this->getWritableStreamWithData();
@@ -31,9 +27,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testTell(): void
     {
         [$stream] = $this->getWritableStreamWithData();
@@ -45,9 +38,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testClose(): void
     {
         $resource = fopen('php://temp', 'r+');
@@ -60,9 +50,6 @@ class StreamTest extends TestCase
         $this->assertFalse(is_resource($resource));
     }
 
-    /**
-     * @return void
-     */
     public function testDetach(): void
     {
         $resource = fopen('php://temp', 'r+');
@@ -76,9 +63,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testEof(): void
     {
         [$stream, $data] = $this->getWritableStreamWithData();
@@ -92,9 +76,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testIsSeekableWithSeekableResource(): void
     {
         [$stream] = $this->getWritableStreamWithData();
@@ -104,9 +85,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testSeek(): void
     {
         [$stream] = $this->getWritableStreamWithData();
@@ -118,9 +96,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testRead(): void
     {
         [$stream] = $this->getWritableStreamWithData();
@@ -136,9 +111,6 @@ class StreamTest extends TestCase
         $this->assertSame('', $read[2]);
     }
 
-    /**
-     * @return void
-     */
     public function testWrite(): void
     {
         $resource = fopen('php://temp', 'r+');
@@ -155,9 +127,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return void
-     */
     public function testGetMetadata(): void
     {
         [$stream] = $this->getWritableStreamWithData();
@@ -167,9 +136,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    /**
-     * @return array
-     */
     private function getWritableStreamWithData(): array
     {
         $data = 'Test string';

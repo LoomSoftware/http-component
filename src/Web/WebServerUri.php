@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Loom\HttpComponent\Web;
 
 use Loom\HttpComponent\Uri;
 
 class WebServerUri
 {
-    /**
-     * @return Uri
-     */
     public static function generate(): Uri
     {
         $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
