@@ -1,5 +1,12 @@
 # Loom | HTTP Component Changelog
 
+## [1.0.1] - 2025-05-17
+### Added
+- Added dev dependency `loomlabs/badger`.
+
+### Removed
+- Remove NPM dependencies.
+
 ## [1.0.0] - 2025-05-05
 ### Added
 - Initial release.
