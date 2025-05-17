@@ -2,9 +2,11 @@
 
 <p>
 <!-- Version Badge -->
-<img src="https://img.shields.io/badge/Version-1.0.0-blue" alt="Version 1.0.0">
+<img src="https://img.shields.io/badge/Version-1.0.1-blue" alt="Version 1.0.1">
+<!-- Coverage Badge -->
+<img src="https://img.shields.io/badge/Coverage-62.54%25-cbc31c" alt="Coverage%2062.54%">
 <!-- License Badge -->
-<img src="https://img.shields.io/badge/License-GPL--3.0--or--later-34ad9b" alt="License GPL--3.0--or--later">
+<img src="https://img.shields.io/badge/License-GPL--3.0--or--later-40adbc" alt="License%20GPL-3.0-or-later">
 </p>
 
 <p>
