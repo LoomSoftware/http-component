@@ -1,5 +1,9 @@
 # Loom | HTTP Component Changelog
 
+## [1.0.2] - 2025-05-21
+### Changed
+- Update for re-release as `loomsoftware/http-component`.
+
 ## [1.0.1] - 2025-05-17
 ### Added
 - Added dev dependency `loomlabs/badger`.
